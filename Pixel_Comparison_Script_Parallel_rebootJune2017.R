@@ -20,6 +20,8 @@ library(Imap)
 library(plyr)
 library(raster)
 library(maptools)
+library(parallel)
+
 
 # #Set directories on PC
 setwd("~/Channel_Islands_Kelp_reboot_June2017/Channel_Islands_Kelp")
@@ -77,30 +79,38 @@ PixelCompare<-function(Pixel_in_rand,Pixel_out_rand){
 Compare_ALL_MPAs<-data.frame(NULL)
 
 mpalist<-unique(FINAL$name)
-mclapply(mpalist,function (m){
-  print(paste("starting ",m,sep=""))
-  subset<-subset(FINAL,FINAL$name==m)
-  subset_in<-subset(subset,subset$PA==1)
-  subset_out<-subset(subset,subset$PA==0)
-  name<-m
-  sub_len<-nrow(subset_in)
-  r<-as.integer(sub_len)
-  if (sum(r)==0) {
-    next
-  }
-  if (sum(r)>0) {
-    for (i in 1:100){
-      data<-do.call("rbind",lapply(c(1:r),function (x){
-        #Grabing inin, in out, and out out comparison pixels
-        Pixel_in_rand<-as.data.frame(rbind(subset_in[x,],subset_in[sample(nrow(subset_in),1),]))
-        Pixel_out_rand<-as.data.frame(subset_out[sample(nrow(subset_out),2),])
-        Compare_MPAs<-PixelCompare(Pixel_in_rand,Pixel_out_rand)
-        return(Compare_MPAs)}))
-      Compare_ALL_MPAs<-rbind(Compare_ALL_MPAs,as.data.frame(data))
-      write.csv(Compare_ALL_MPAs,file=paste("Compare_ALL_MPAS_version_",i,"_",m,".csv",sep=""))
+mclapply(1:12,function (xx){
+  for (m in mpalist){
+    print(paste("starting ",m,sep=""))
+    subset<-subset(FINAL,FINAL$name==m)
+    subset_in<-subset(subset,subset$PA==1)
+    subset_out<-subset(subset,subset$PA==0)
+    name<-m
+    sub_len<-nrow(subset_in)
+    r<-as.integer(sub_len)
+    if (sum(r)==0) {
+      next
+    }
+    if (sum(r)>0) {
+      for (i in 1:1){
+        data<-do.call("rbind",lapply(c(1:r),function (x){
+          #Grabing inin, in out, and out out comparison pixels
+          Pixel_in_rand<-as.data.frame(rbind(subset_in[x,],subset_in[sample(nrow(subset_in),1),]))
+          Pixel_out_rand<-as.data.frame(subset_out[sample(nrow(subset_out),2),])
+          Compare_MPAs<-PixelCompare(Pixel_in_rand,Pixel_out_rand)
+          return(Compare_MPAs)}))
+        Compare_ALL_MPAs<-rbind(Compare_ALL_MPAs,as.data.frame(data))
+        write.csv(Compare_ALL_MPAs,file=paste("Compare_ALL_MPAS_version_",i,"_",m,".csv",sep=""))
+      }
     }
   }
 })
+
+
+  })
+    
+  }
+
   
 
 #pullng together all CSVs
