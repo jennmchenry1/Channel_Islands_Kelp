@@ -40,13 +40,17 @@ Teales=CRS("+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120+x_0=0 +y_0=-400
 
 
 #Setting the working directory
-data_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/data"
-plot_dir<-c("C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/plots")
-scripts_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/scripts"
-functions_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/functions"
-kelp_raw_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/data/Kelp_Raw"
-kelp_raster_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/data/Kelp_Raster"
-temp_plot_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs_working/plots/Temp_plot_dir"
+wd=paste("C:/Users/jennm/Dropbox/PROJECTS/Channel_Islands_Kelp")
+setwd(wd)
+
+data_dir=paste(wd,"/data",sep="")
+scripts_dir=paste(wd,"/scripts",sep="")
+plots_dir=paste(wd,"/plots",sep="")
+functions_dir=paste(wd,"/functions",sep="")
+
+kelp_raw_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp/data/Kelp_Raw"
+kelp_raster_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp_MPAs/data/Kelp_Raster"
+temp_plot_dir<-"C:/Users/jennm/Dropbox/PROJECTS/Channel_Island_Kelp/plots/Temp_plot_dir"
 
 
 #bringing in functions
